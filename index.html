@@ -4,14 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>One Question</title>
+
 <style>
   body {
     margin: 0;
     height: 100vh;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     font-family: system-ui, Arial, sans-serif;
     color: white;
     overflow: hidden;
@@ -20,30 +21,29 @@
 
   .card {
     background: rgba(0,0,0,0.5);
-    padding: 24px;
+    padding: 22px;
     border-radius: 16px;
-    max-width: 90%;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    width: min(90vw, 380px);
+    z-index: 5;
   }
 
   h1 {
+    font-size: 1.5rem;
     margin-bottom: 12px;
-    font-size: 1.6rem;
   }
 
   .buttons {
-    margin-top: 16px;
     position: relative;
     height: 120px;
+    margin-top: 12px;
   }
 
   button {
     padding: 12px 20px;
-    font-size: 1rem;
-    border: none;
     border-radius: 999px;
+    border: none;
+    font-size: 16px;
     cursor: pointer;
-    transition: transform 0.2s ease;
   }
 
   #yesBtn {
@@ -53,80 +53,101 @@
 
   #noBtn {
     position: absolute;
-    background: #444;
+    background: #555;
     color: white;
-    left: 50%;
-    top: 60%;
+    left: 55%;
+    top: 50%;
     transform: translate(-50%, -50%);
   }
 
   #begText {
-    margin-top: 16px;
-    min-height: 2em;
+    margin-top: 12px;
+    min-height: 40px;
     font-size: 1rem;
   }
 
-  #gallery {
+  #loveMessage {
     display: none;
-    margin-top: 16px;
-    font-size: 1.4rem;
+    margin-top: 14px;
+    font-size: 1rem;
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+
+  .particle {
+    position: fixed;
+    top: -30px;
+    pointer-events: none;
+    animation: fall linear forwards;
+    font-size: 22px;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translateY(110vh) rotate(360deg);
+      opacity: 0;
+    }
   }
 </style>
 </head>
+
 <body>
 
 <div class="card">
-  <h1 id="question">Do you want to be my valentine {{NAME}}</h1>
+  <h1 id="question">Do you want to be my valentine Zuleikha</h1>
+
   <div class="buttons">
     <button id="yesBtn">Yes</button>
     <button id="noBtn">No</button>
   </div>
+
   <div id="begText"></div>
-  <div id="gallery">🌆 🏜 🌠 🍫 🌺 🌻 🌹 🌷</div>
+
+  <div id="loveMessage"></div>
 </div>
 
-<audio id="song" preload="auto">
+<audio id="song">
   <source src="xo.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-  const name = "Zuleikha"; // change name here for other people
-  document.getElementById("question").innerText = 
-    "Do you want to be my valentine " + name;
-
   const noBtn = document.getElementById("noBtn");
   const begText = document.getElementById("begText");
-  const gallery = document.getElementById("gallery");
+  const loveMessage = document.getElementById("loveMessage");
   const song = document.getElementById("song");
 
   const begs = [
     "plsssssssssssss 😭",
     "pretty plssss 🥺",
-    "just say yes already 😭",
-    "my heart is waiting 💔",
+    "are you sureee 😭",
     "dont do me like this 😩",
-    "im begging you 😭🙏",
+    "my heart is soft today 💔",
+    "just one tiny yes 🥹",
+    "im literally begging 😭🙏",
+    "look at me trying 😔",
+    "ok but this hurts 😭",
+    "why you like this 😩",
+    "i will bring chocolates 🍫",
+    "flowers for you 🌷",
+    "im down bad rn 😭",
+    "this no button evil 😤",
+    "my heart is tired 💔",
+    "one yes and we vibe 🌙",
+    "im asking nicely 🥺",
+    "ok ok im dramatic 😭",
     "you know you want to 😏",
-    "one tiny yes plssss 🥹",
-    "ill be extra nice forever 😭",
-    "this no button is mean 😤",
-    "you are breaking my heart 💔",
-    "im on my knees rn 😭",
-    "be kind to me plssss 🥺",
-    "just one yes and we vibe 🌙",
-    "i will owe you chocolates 🍫",
-    "flowers for you always 🌷",
-    "ill sing for you 🎶",
-    "my soul is tired 😭",
-    "dont run away from love 💘",
-    "ok last time plsssssssssssss 😭"
+    "last time plssssssss 😭"
   ];
 
   let begIndex = 0;
 
   function moveNo() {
-    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+    const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 
@@ -139,12 +160,59 @@
   noBtn.addEventListener("touchstart", moveNo);
 
   document.getElementById("yesBtn").addEventListener("click", () => {
-    begText.innerText = "Yessss 😭💖 you just made my day";
-    gallery.style.display = "block";
-    song.play().catch(() => {
-      alert("Tap anywhere to allow music 🎶");
-    });
+    song.play();
+    begText.innerText = "Yessss 😭💖";
+    showParticles();
+    showMessage();
   });
+
+  function showParticles() {
+    const emojis = ["🎉","❤️","🌹","✨","💖"];
+    const interval = setInterval(() => {
+      for (let i = 0; i < 6; i++) {
+        const p = document.createElement("div");
+        p.className = "particle";
+        p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.animationDuration = 3 + Math.random() * 2 + "s";
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 5000);
+      }
+    }, 250);
+
+    setTimeout(() => clearInterval(interval), 7000);
+  }
+
+  function showMessage() {
+    loveMessage.style.display = "block";
+    loveMessage.innerText = 
+`you are beautiful in ways i cannot explain with simple words 😍
+you make my chest feel warm and safe 💖
+you have a heart that feels deeply and cares deeply 🫶
+your empathy makes the world softer 🌍
+you notice people you feel people you heal people 🌱
+your presence changes my mood my day my perspective ✨
+you matter more than you know 💫
+you deserve gentleness patience understanding 💐
+you deserve to be loved in the ways you love 🥹
+you deserve someone who listens who sees who stays ❤️
+i appreciate you more than you think 🌙
+i admire your strength even on hard days 💪
+i see the softness in you and i respect it 🌸
+you are worthy of calm love and honest care 🫂
+you are not a burden you are a gift 🎁
+you are enough just as you are 🌷
+you do not need to change to be loved 💞
+you are already special in your own way 🌟
+you make life feel warmer and brighter 🌅
+you bring comfort without even trying 🤍
+you are gentle with others and i hope you are gentle with yourself 🌼
+you deserve rest kindness patience and joy 💕
+you deserve love that feels safe 🏡
+you deserve smiles that reach your heart 😌
+you deserve to be chosen every day 💘 
+by ~awan😍🤩`;
+  }
 </script>
 
 </body>
